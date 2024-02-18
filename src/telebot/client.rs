@@ -30,14 +30,16 @@ pub struct Client {
     token: String,
     client: reqwest::Client,
     secret_token: String,
+    telegram_api_base_url: String,
 }
 
 impl Client {
     pub async fn new(
         token: &str,
-        url: &String,
+        url: &str,
         secret_token: Option<&String>,
         max_connection: u8,
+        telegram_api_base_url: &str,
     ) -> Result<Self> {
         let c = Self {
             token: token.to_owned(),
@@ -45,6 +47,7 @@ impl Client {
             secret_token: secret_token
                 .map(|token| token.to_owned())
                 .unwrap_or_else(|| Uuid::new_v4().to_string()),
+            telegram_api_base_url: telegram_api_base_url.to_owned(),
         };
 
         info!("Updating telegram webhook url to {}", &url);
@@ -65,8 +68,8 @@ impl Client {
         let response = self
             .client
             .post(format!(
-                "https://api.telegram.org/bot{}/{}",
-                self.token, method
+                "{}/bot{}/{}",
+                self.telegram_api_base_url, self.token, method
             ))
             .form(&form)
             .send()

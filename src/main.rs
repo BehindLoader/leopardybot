@@ -26,6 +26,7 @@ async fn main() -> Result<()> {
         &format!("https://{}/api/v1/telegram", &c.host),
         c.telegram_secret_token.as_ref(),
         c.telegram_max_connections,
+        "https://api.telegram.org",
     )
     .await?;
     let router = Router::new()

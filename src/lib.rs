@@ -33,3 +33,9 @@ pub mod telebot {
     pub mod client;
     pub mod typings;
 }
+
+#[cfg(test)]
+pub mod tests {
+    pub mod common;
+    pub mod help_command;
+}
